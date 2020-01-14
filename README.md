@@ -92,3 +92,54 @@ const Header = () => {
 }
 ```
 
+## 搭建动态结构
+
+新建`hooks.jsx`，主要代码如下：
+
+```javascript
+const Types = {
+  ADD_ITEM: "ADD_ITEM",
+  DEL_ITEM: "DEL_ITEM",
+  CLEAR_ALL: "CLEAR_ALL"
+}
+
+export const ActionCreators = {
+  add: (item) => ({ type: Types.ADD_ITEM, data: item }),
+  del: (index) => ({ type: Types.DEL_ITEM, data: index }),
+  clear: () => ({ type: Types.CLEAR_ALL }),
+}
+
+export const DefaultData = { list: [] }
+
+export const Reducer = (state, action) => {
+  switch (action.type) {
+    case Types.ADD_ITEM:
+      return { ...state, list: [...state.list, action.data] }
+    case Types.DEL_ITEM:
+      return { ...state, list: state.list.filter((_, index) => index !== action.data) }
+    case Types.CLEAR_ALL:
+      return { ...state, list: [] }
+    default:
+      return state
+  }
+}
+
+export const Context = React.createContext({})
+```
+
+对`App.jsx`、 `Detail.jsx`、 `Header.jsx`分别做如下修改：
+
+![4.png](./doc/4.png)
+
+![5.png](./doc/5.png)
+
+![6.png](./doc/6.png)
+
+最终效果如下：
+![7.gif](./doc/7.gif)
+
+## 参考资料
+
+- [react.js小书](http://huziketang.mangojuice.top/books/react/lesson1) 小书详细描述了 react 及 redux 的原理
+- [react-learn-ts](https://github.com/baibai-lee/react-learn-ts) 我在学习react时积累的一个demo，其中更完整地使用的react的各项api
+- [todolist](http://www.todolist.cn/)  一个简易的 todolist，以上的两个demo灵感均来源于此
